@@ -1,7 +1,7 @@
 Spring Integration Voldemort Adapter
 ====================================
 
-The Voldemort adapter for Spring Integration (SI) project includes inbound
+The Voldemort extension for Spring Integration (SI) project includes inbound
 and outbound channel adapters.
 
 Inbound channel adapter:
