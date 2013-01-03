@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.springframework.org/schema/integration/voldemort"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:tool="http://www.springframework.org/schema/tool"
+	xmlns:integration="http://www.springframework.org/schema/integration"
+	targetNamespace="http://www.springframework.org/schema/integration/voldemort"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:import namespace="http://www.springframework.org/schema/beans" />
+	<xsd:import namespace="http://www.springframework.org/schema/tool" />
+	<xsd:import namespace="http://www.springframework.org/schema/integration"
+		schemaLocation="http://www.springframework.org/schema/integration/spring-integration.xsd" />
+
+	<xsd:annotation>
+		<xsd:documentation><![CDATA[
+			Defines the configuration elements for the Spring Integration
+			Voldemort Adapter.
+		]]></xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:element name="outbound-channel-adapter">
+			<xsd:annotation>
+					<xsd:documentation>
+							Defines an outbound Channel Adapter.
+					</xsd:documentation>
+			</xsd:annotation>
+			<xsd:complexType>
+				<xsd:attributeGroup ref="voldemortAdapterAttributes"/>
+			</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="inbound-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation>
+                Defines an inbound Channel Adapter.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1" />
+            </xsd:sequence>
+            <xsd:attributeGroup ref="voldemortAdapterAttributes" />
+            <xsd:attribute name="search-key" type="xsd:string" />
+            <xsd:attribute name="search-key-expression" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+
+	<xsd:attributeGroup name="voldemortAdapterAttributes">
+		<xsd:attribute name="id" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Identifies the underlying Spring bean definition.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+        <xsd:attribute name="channel" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:appinfo>
+                    <xsd:documentation>
+                        Reference to a Message Channel that will be used by this adapter to
+                        "receive from" or "send to" messages depending on the adapter type
+                        (e.g. inbound/outbound).
+                    </xsd:documentation>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="org.springframework.integration.MessageChannel" />
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="store-client" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="voldemort.client.StoreClient"/>
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="message-converter" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="org.springframework.integration.voldemort.convert.VoldemortConverter"/>
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+	</xsd:attributeGroup>
+</xsd:schema>
