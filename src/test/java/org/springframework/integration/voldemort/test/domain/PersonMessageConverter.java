@@ -19,6 +19,7 @@ import org.springframework.integration.Message;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.voldemort.convert.VoldemortConverter;
 import org.springframework.integration.voldemort.support.KeyValue;
+import voldemort.versioning.Versioned;
 
 /**
  * Converts {@link Person} message to key-value pair.
@@ -33,7 +34,7 @@ public class PersonMessageConverter implements VoldemortConverter<String, Person
 	}
 
 	@Override
-	public Message<Person> toMessage(String key, Person value) {
-		return MessageBuilder.withPayload( value ).build();
+	public Message<Person> toMessage(String key, Versioned<Person> versioned) {
+		return MessageBuilder.withPayload( versioned.getValue() ).build();
 	}
 }

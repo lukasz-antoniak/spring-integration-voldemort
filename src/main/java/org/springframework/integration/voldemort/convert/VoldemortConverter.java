@@ -18,6 +18,7 @@ package org.springframework.integration.voldemort.convert;
 import org.springframework.integration.Message;
 import org.springframework.integration.voldemort.support.KeyValue;
 import org.springframework.integration.support.MessageBuilder;
+import voldemort.versioning.Versioned;
 
 /**
  * Converter allowing to transform Spring Integration message to Voldemort record with desired key and value
@@ -45,8 +46,8 @@ public interface VoldemortConverter<K, V, P> {
 	 * Implementation note: Typically use {@link MessageBuilder} pattern for creating messages.
 	 *
 	 * @param key Object key.
-	 * @param value Object value.
+	 * @param versioned Voldemort version object (includes value reference).
 	 * @return Spring Integration message.
 	 */
-	public Message<P> toMessage(K key, V value);
+	public Message<P> toMessage(K key, Versioned<V> versioned);
 }

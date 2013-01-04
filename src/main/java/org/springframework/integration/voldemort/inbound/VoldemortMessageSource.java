@@ -66,9 +66,8 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 	@SuppressWarnings("unchecked")
 	public Message<Object> receive() {
 		final Object key = keyExpression.getValue( this.evaluationContext, Object.class );
-		final Versioned versioned = client.get( key );
-		if ( versioned != null ) {
-			final Object value = versioned.getValue();
+		final Versioned value = client.get( key );
+		if ( value != null ) {
 			return converter.toMessage( key, value );
 		}
 		return null;
