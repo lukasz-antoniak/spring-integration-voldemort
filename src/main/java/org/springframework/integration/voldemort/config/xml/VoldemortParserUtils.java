@@ -25,17 +25,18 @@ import org.w3c.dom.Element;
  * @since 1.0
  */
 abstract class VoldemortParserUtils {
-	static final String STORE_CLIENT_ATTRIBUTE = "store-client";
-	static final String MESSAGE_CONVERTER_ATTRIBUTE = "message-converter";
-	static final String SEARCH_KEY_ATTRIBUTE = "search-key";
-	static final String SEARCH_KEY_EXPRESSION_ATTRIBUTE = "search-key-expression";
+	static final String STORE_CLIENT = "store-client";
+	static final String MESSAGE_CONVERTER = "message-converter";
+	static final String PERSIST_MODE = "persist-mode";
+	static final String SEARCH_KEY = "search-key";
+	static final String SEARCH_KEY_EXPRESSION = "search-key-expression";
 
 	/**
 	 * Handles 'store-client' and 'message-converter' attributes.
 	 */
 	static void processCommonAttributes(Element element, BeanDefinitionBuilder builder) {
-		String storeClient = element.getAttribute( VoldemortParserUtils.STORE_CLIENT_ATTRIBUTE );
-		String messageConverter = element.getAttribute( VoldemortParserUtils.MESSAGE_CONVERTER_ATTRIBUTE );
+		String storeClient = element.getAttribute( VoldemortParserUtils.STORE_CLIENT );
+		String messageConverter = element.getAttribute( VoldemortParserUtils.MESSAGE_CONVERTER );
 		builder.addConstructorArgReference( storeClient );
 		builder.addConstructorArgReference( messageConverter );
 	}

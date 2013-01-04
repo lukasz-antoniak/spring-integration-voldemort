@@ -15,7 +15,7 @@ key.
 ~~~~~xml
 <int-voldemort:inbound-channel-adapter id="voldemortInKey" channel="voldemortInboundChannel" search-key="1ukasz"
                                        store-client="storeClient" message-converter="messageConverter">
-    <int:poller fixed-rate="1000"/>
+    <int:poller fixed-rate="1000" />
 </int-voldemort:inbound-channel-adapter>
 ~~~~~
 

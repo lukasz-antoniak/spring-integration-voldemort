@@ -37,18 +37,20 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testReceiveMessageKey() {
-		// given
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
-		final Person lukasz = new Person( "1ukasz", "Lukasz", "Antoniak" );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+
+		// given
+		final Person lukasz = new Person( "1ukasz", "Lukasz", "Antoniak" );
 		storeClient.put( lukasz.getId(), lukasz );
 
 		// when
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 		Message<Person> received = (Message<Person>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( lukasz, received.getPayload() );
+
 		context.close();
 	}
 
@@ -58,18 +60,20 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testReceiveMessageExpr() {
-		// given
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
-		final Person kinga = new Person( "kinga", "Kinga", "Mroz" );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+
+		// given
+		final Person kinga = new Person( "kinga", "Kinga", "Mroz" );
 		storeClient.put( kinga.getId(), kinga );
 
 		// when
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 		Message<Person> received = (Message<Person>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( kinga, received.getPayload() );
+
 		context.close();
 	}
 }

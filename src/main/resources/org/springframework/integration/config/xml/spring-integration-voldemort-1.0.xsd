@@ -26,6 +26,7 @@
 			</xsd:annotation>
 			<xsd:complexType>
 				<xsd:attributeGroup ref="voldemortAdapterAttributes"/>
+				<xsd:attribute name="persist-mode" use="optional" default="PUT" type="persistMode"/>
 			</xsd:complexType>
 	</xsd:element>
 
@@ -86,4 +87,11 @@
             </xsd:annotation>
         </xsd:attribute>
 	</xsd:attributeGroup>
+
+	<xsd:simpleType name="persistMode">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="PUT"/>
+			<xsd:enumeration value="DELETE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 </xsd:schema>

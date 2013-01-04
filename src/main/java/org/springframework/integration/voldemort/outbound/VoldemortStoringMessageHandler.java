@@ -19,6 +19,7 @@ import org.springframework.integration.Message;
 import org.springframework.integration.handler.AbstractMessageHandler;
 import org.springframework.integration.voldemort.convert.VoldemortConverter;
 import org.springframework.integration.voldemort.support.KeyValue;
+import org.springframework.integration.voldemort.support.PersistMode;
 import voldemort.client.StoreClient;
 
 /**
@@ -30,6 +31,8 @@ import voldemort.client.StoreClient;
 public class VoldemortStoringMessageHandler extends AbstractMessageHandler {
 	private final StoreClient client;
 	private final VoldemortConverter converter;
+
+	private volatile PersistMode persistMode = PersistMode.PUT;
 
 	/**
 	 * Creates new message sender.
@@ -46,11 +49,22 @@ public class VoldemortStoringMessageHandler extends AbstractMessageHandler {
 	@SuppressWarnings("unchecked")
 	protected void handleMessageInternal(Message<?> message) throws Exception {
 		final KeyValue pair = converter.toKeyValue( message );
-		client.put( pair.getKey(), pair.getValue() );
+		switch ( persistMode ) {
+			case PUT:
+				client.put( pair.getKey(), pair.getValue() );
+				break;
+			case DELETE:
+				client.delete( pair.getKey() );
+				break;
+		}
 	}
 
 	@Override
 	public String getComponentType() {
 		return "voldemort:outbound-channel-adapter";
+	}
+
+	public void setPersistMode(PersistMode persistMode) {
+		this.persistMode = persistMode;
 	}
 }

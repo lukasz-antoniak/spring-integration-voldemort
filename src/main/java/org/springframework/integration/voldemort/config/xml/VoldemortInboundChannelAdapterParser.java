@@ -42,7 +42,7 @@ public class VoldemortInboundChannelAdapterParser extends AbstractPollingInbound
 		VoldemortParserUtils.processCommonAttributes( element, builder );
 		RootBeanDefinition queryExpressionDef =
 				IntegrationNamespaceUtils.createExpressionDefinitionFromValueOrExpression(
-						VoldemortParserUtils.SEARCH_KEY_ATTRIBUTE, VoldemortParserUtils.SEARCH_KEY_EXPRESSION_ATTRIBUTE,
+						VoldemortParserUtils.SEARCH_KEY, VoldemortParserUtils.SEARCH_KEY_EXPRESSION,
 						parserContext, element, true
 				);
 		builder.addConstructorArgValue(queryExpressionDef);

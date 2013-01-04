@@ -8,8 +8,14 @@
 			http://www.springframework.org/schema/integration/voldemort http://www.springframework.org/schema/integration/voldemort/spring-integration-voldemort.xsd">
     <import resource="../common-test-context.xml" />
 
-    <int:channel id="voldemortOutboundChannel" />
+    <int:channel id="voldemortOutboundPutChannel" />
 
-    <int-voldemort:outbound-channel-adapter id="voldemortOut" channel="voldemortOutboundChannel"
+    <int:channel id="voldemortOutboundDeleteChannel" />
+
+    <int-voldemort:outbound-channel-adapter id="voldemortPut" channel="voldemortOutboundPutChannel"
                                             store-client="storeClient" message-converter="messageConverter" />
+
+    <int-voldemort:outbound-channel-adapter id="voldemortDelete" channel="voldemortOutboundDeleteChannel"
+                                            store-client="storeClient" message-converter="messageConverter"
+                                            persist-mode="DELETE" />
 </beans>

@@ -34,9 +34,11 @@ import voldemort.versioning.Versioned;
 public interface VoldemortConverter<K, V, P> {
 	/**
 	 * Transform Spring Integration message to key-value pair.
+	 * <p />
+	 * Implementation note: Typically use {@link KeyValue#make(Object, Object)} method to create key-value pair.
 	 *
 	 * @param message Spring Integration message.
-	 * @return Key-value pair to save in Voldemort store.
+	 * @return Key-value pair to persist in Voldemort store.
 	 */
 	public KeyValue<K, V> toKeyValue(Message<P> message);
 

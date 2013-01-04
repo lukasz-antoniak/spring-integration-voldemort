@@ -17,15 +17,12 @@ package org.springframework.integration.voldemort.test.outbound;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessageChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.voldemort.test.BaseFunctionalTestCase;
 import org.springframework.integration.voldemort.test.domain.Person;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import voldemort.client.StoreClient;
 import voldemort.versioning.Versioned;
 
@@ -35,27 +32,47 @@ import voldemort.versioning.Versioned;
  * @author Lukasz Antoniak
  * @since 1.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "VoldemortOutboundAdapterTest-context.xml" })
 public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
-	@Autowired
-	private MessageChannel voldemortOutboundChannel;
-
-	@Autowired
-	private StoreClient storeClient;
-
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testSendMessage() {
+	public void testPutObject() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		MessageChannel voldemortOutboundPutChannel = context.getBean( "voldemortOutboundPutChannel", MessageChannel.class );
+
 		// given
 		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
 
 		// when
 		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
-		voldemortOutboundChannel.send( message );
+		voldemortOutboundPutChannel.send( message );
 
 		// then
 		Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertEquals( lukasz, found.getValue() );
+
+		context.close();
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testDeleteObject() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
+
+		// given
+		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
+		storeClient.put( lukasz.getId(), lukasz );
+
+		// when
+		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		voldemortOutboundDeleteChannel.send( message );
+
+		// then
+		Versioned found = storeClient.get( lukasz.getId() );
+		Assert.assertNull( found );
+
+		context.close();
 	}
 }
