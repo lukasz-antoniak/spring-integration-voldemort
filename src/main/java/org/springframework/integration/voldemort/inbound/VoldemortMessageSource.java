@@ -37,6 +37,7 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 
 	private final Expression keyExpression;
 	private volatile StandardEvaluationContext evaluationContext;
+	private volatile boolean deleteAfterPoll = false;
 
 	/**
 	 * Creates new message source.
@@ -68,6 +69,9 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 		final Object key = keyExpression.getValue( this.evaluationContext, Object.class );
 		final Versioned value = client.get( key );
 		if ( value != null ) {
+			if ( deleteAfterPoll ) {
+				client.delete( key );
+			}
 			return converter.toMessage( key, value );
 		}
 		return null;
@@ -76,5 +80,9 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 	@Override
 	public String getComponentType() {
 		return "voldemort:inbound-channel-adapter";
+	}
+
+	public void setDeleteAfterPoll(boolean deleteAfterPoll) {
+		this.deleteAfterPoll = deleteAfterPoll;
 	}
 }

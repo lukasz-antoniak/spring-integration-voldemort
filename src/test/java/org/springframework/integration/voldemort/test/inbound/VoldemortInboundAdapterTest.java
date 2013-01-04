@@ -23,6 +23,7 @@ import org.springframework.integration.core.PollableChannel;
 import org.springframework.integration.voldemort.test.BaseFunctionalTestCase;
 import org.springframework.integration.voldemort.test.domain.Person;
 import voldemort.client.StoreClient;
+import voldemort.versioning.Versioned;
 
 /**
  * Voldemort inbound adapter tests.
@@ -73,6 +74,28 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 
 		// then
 		Assert.assertEquals( kinga, received.getPayload() );
+
+		context.close();
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testDeleteAfterPoll() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
+		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+
+		// given
+		final Person robert = new Person( "robert", "Robert", "Antoniak" );
+		storeClient.put( robert.getId(), robert );
+
+		// when
+		Message<Person> received = (Message<Person>) inboundChannel.receive();
+
+		// then
+		Assert.assertEquals( robert, received.getPayload() );
+		final Versioned found = storeClient.get( robert.getId() );
+		Assert.assertNull( found );
 
 		context.close();
 	}

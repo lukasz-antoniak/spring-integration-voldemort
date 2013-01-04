@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns="http://www.springframework.org/schema/integration/voldemort"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:tool="http://www.springframework.org/schema/tool"
-	xmlns:integration="http://www.springframework.org/schema/integration"
-	targetNamespace="http://www.springframework.org/schema/integration/voldemort"
-	elementFormDefault="qualified" attributeFormDefault="unqualified">
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
+            xmlns:tool="http://www.springframework.org/schema/tool"
+            xmlns:integration="http://www.springframework.org/schema/integration"
+            targetNamespace="http://www.springframework.org/schema/integration/voldemort"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xsd:import namespace="http://www.springframework.org/schema/beans" />
-	<xsd:import namespace="http://www.springframework.org/schema/tool" />
-	<xsd:import namespace="http://www.springframework.org/schema/integration"
-		schemaLocation="http://www.springframework.org/schema/integration/spring-integration.xsd" />
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"/>
+    <xsd:import namespace="http://www.springframework.org/schema/integration"
+                schemaLocation="http://www.springframework.org/schema/integration/spring-integration.xsd"/>
 
-	<xsd:annotation>
-		<xsd:documentation><![CDATA[
+    <xsd:annotation>
+        <xsd:documentation><![CDATA[
 			Defines the configuration elements for the Spring Integration
 			Voldemort Adapter.
 		]]></xsd:documentation>
-	</xsd:annotation>
+    </xsd:annotation>
 
-	<xsd:element name="outbound-channel-adapter">
-			<xsd:annotation>
-					<xsd:documentation>
-							Defines an outbound Channel Adapter.
-					</xsd:documentation>
-			</xsd:annotation>
-			<xsd:complexType>
-				<xsd:attributeGroup ref="voldemortAdapterAttributes"/>
-				<xsd:attribute name="persist-mode" use="optional" default="PUT" type="persistMode"/>
-			</xsd:complexType>
-	</xsd:element>
+    <xsd:element name="outbound-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation>
+                Defines an outbound Channel Adapter.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attributeGroup ref="voldemortAdapterAttributes"/>
+            <xsd:attribute name="persist-mode" use="optional" default="PUT">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="persistMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
 
     <xsd:element name="inbound-channel-adapter">
         <xsd:annotation>
@@ -38,22 +42,27 @@
         </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
             </xsd:sequence>
-            <xsd:attributeGroup ref="voldemortAdapterAttributes" />
-            <xsd:attribute name="search-key" type="xsd:string" />
-            <xsd:attribute name="search-key-expression" type="xsd:string" />
+            <xsd:attributeGroup ref="voldemortAdapterAttributes"/>
+            <xsd:attribute name="search-key" type="xsd:string"/>
+            <xsd:attribute name="search-key-expression" type="xsd:string"/>
+            <xsd:attribute name="delete-after-poll" default="false" use="optional">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="xsd:boolean xsd:string" />
+                </xsd:simpleType>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
-	<xsd:attributeGroup name="voldemortAdapterAttributes">
-		<xsd:attribute name="id" type="xsd:string" use="optional">
-			<xsd:annotation>
-				<xsd:documentation>
-					Identifies the underlying Spring bean definition.
-				</xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
+    <xsd:attributeGroup name="voldemortAdapterAttributes">
+        <xsd:attribute name="id" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Identifies the underlying Spring bean definition.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
         <xsd:attribute name="channel" type="xsd:string" use="required">
             <xsd:annotation>
                 <xsd:appinfo>
@@ -63,7 +72,7 @@
                         (e.g. inbound/outbound).
                     </xsd:documentation>
                     <tool:annotation kind="ref">
-                        <tool:expected-type type="org.springframework.integration.MessageChannel" />
+                        <tool:expected-type type="org.springframework.integration.MessageChannel"/>
                     </tool:annotation>
                 </xsd:appinfo>
             </xsd:annotation>
@@ -86,12 +95,12 @@
                 </xsd:appinfo>
             </xsd:annotation>
         </xsd:attribute>
-	</xsd:attributeGroup>
+    </xsd:attributeGroup>
 
-	<xsd:simpleType name="persistMode">
-		<xsd:restriction base="xsd:token">
-			<xsd:enumeration value="PUT"/>
-			<xsd:enumeration value="DELETE"/>
-		</xsd:restriction>
-	</xsd:simpleType>
+    <xsd:simpleType name="persistMode">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="PUT"/>
+            <xsd:enumeration value="DELETE"/>
+        </xsd:restriction>
+    </xsd:simpleType>
 </xsd:schema>

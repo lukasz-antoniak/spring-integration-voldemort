@@ -30,6 +30,7 @@ abstract class VoldemortParserUtils {
 	static final String PERSIST_MODE = "persist-mode";
 	static final String SEARCH_KEY = "search-key";
 	static final String SEARCH_KEY_EXPRESSION = "search-key-expression";
+	static final String DELETE_AFTER_POLL = "delete-after-poll";
 
 	/**
 	 * Handles 'store-client' and 'message-converter' attributes.
