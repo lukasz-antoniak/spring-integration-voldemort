@@ -32,6 +32,8 @@ abstract class VoldemortParserUtils {
 	static final String SEARCH_KEY_EXPRESSION = "search-key-expression";
 	static final String DELETE_AFTER_POLL = "delete-after-poll";
 
+	static final String KEY_EXPRESSION_PROPERTY = "keyExpression";
+
 	/**
 	 * Handles 'store-client' and 'message-converter' attributes.
 	 */

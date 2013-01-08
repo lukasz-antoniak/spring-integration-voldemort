@@ -71,10 +71,24 @@ public abstract class BaseFunctionalTestCase {
 		File metadata = new File( config.getMetadataDirectory() );
 		FileUtils.forceMkdir( metadata );
 
-		FileUtils.copyFileToDirectory( new File( "src/test/resources/cluster.xml" ), metadata );
-		FileUtils.copyFileToDirectory( new File( "src/test/resources/stores.xml" ), metadata );
+		FileUtils.copyFileToDirectory( getClusterConfiguration(), metadata );
+		FileUtils.copyFileToDirectory( getStoreConfiguration(), metadata );
 
 		return config;
+	}
+
+	/**
+	 * @return Voldemort cluster configuration descriptor.
+	 */
+	protected File getClusterConfiguration() {
+		return new File( "src/test/resources/cluster.xml" );
+	}
+
+	/**
+	 * @return Voldemort store configuration descriptor.
+	 */
+	protected File getStoreConfiguration() {
+		return new File( "src/test/resources/stores.xml" );
 	}
 
 	/**

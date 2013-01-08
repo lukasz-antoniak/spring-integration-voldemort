@@ -35,7 +35,10 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 	private final StoreClient client;
 	private final VoldemortConverter converter;
 
-	private final Expression keyExpression;
+	/**
+	 * Key expression which will be evaluated on every call to the {@link #receive()} method.
+	 */
+	private volatile Expression keyExpression;
 	private volatile StandardEvaluationContext evaluationContext;
 	private volatile boolean deleteAfterPoll = false;
 
@@ -44,12 +47,10 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 	 *
 	 * @param client Voldemort store client.
 	 * @param converter Message converter.
-	 * @param keyExpression Key expression which will be evaluated on every call to the {@link #receive()} method.
 	 */
-	public VoldemortMessageSource(StoreClient client, VoldemortConverter converter, Expression keyExpression) {
+	public VoldemortMessageSource(StoreClient client, VoldemortConverter converter) {
 		this.client = client;
 		this.converter = converter;
-		this.keyExpression = keyExpression;
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Message<Object> receive() {
-		final Object key = keyExpression.getValue( this.evaluationContext, Object.class );
+		final Object key = keyExpression.getValue( evaluationContext, Object.class );
 		final Versioned value = client.get( key );
 		if ( value != null ) {
 			if ( deleteAfterPoll ) {
@@ -84,5 +85,13 @@ public class VoldemortMessageSource extends IntegrationObjectSupport implements 
 
 	public void setDeleteAfterPoll(boolean deleteAfterPoll) {
 		this.deleteAfterPoll = deleteAfterPoll;
+	}
+
+	public Expression getKeyExpression() {
+		return keyExpression;
+	}
+
+	public void setKeyExpression(Expression keyExpression) {
+		this.keyExpression = keyExpression;
 	}
 }
