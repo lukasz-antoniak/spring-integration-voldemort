@@ -20,6 +20,7 @@ import org.springframework.integration.handler.AbstractMessageHandler;
 import org.springframework.integration.voldemort.convert.VoldemortConverter;
 import org.springframework.integration.voldemort.support.KeyValue;
 import org.springframework.integration.voldemort.support.PersistMode;
+import org.springframework.integration.voldemort.support.VoldemortHeaders;
 import voldemort.client.StoreClient;
 
 /**
@@ -49,7 +50,7 @@ public class VoldemortStoringMessageHandler extends AbstractMessageHandler {
 	@SuppressWarnings("unchecked")
 	protected void handleMessageInternal(Message<?> message) throws Exception {
 		final KeyValue pair = converter.toKeyValue( message );
-		switch ( persistMode ) {
+		switch ( determinePersistMode( message ) ) {
 			case PUT:
 				client.put( pair.getKey(), pair.getValue() );
 				break;
@@ -57,6 +58,25 @@ public class VoldemortStoringMessageHandler extends AbstractMessageHandler {
 				client.delete( pair.getKey() );
 				break;
 		}
+	}
+
+	/**
+	 * Computes desired persist mode for a given message. Default output adapter's configuration
+	 * can be overridden with {@link VoldemortHeaders#PERSIST_MODE} message header which supports
+	 * direct or text representation of {@link PersistMode} enumeration.
+	 *
+	 * @param message Spring Integration message.
+	 * @return Persist mode.
+	 */
+	private PersistMode determinePersistMode(Message<?> message) {
+		Object confValue = message.getHeaders().get( VoldemortHeaders.PERSIST_MODE );
+		if ( confValue instanceof PersistMode ) {
+			return (PersistMode) confValue;
+		}
+		else if ( confValue instanceof String ) {
+			return PersistMode.valueOf( (String) confValue );
+		}
+		return persistMode;
 	}
 
 	@Override

@@ -31,19 +31,19 @@ import voldemort.versioning.Versioned;
  * @author Lukasz Antoniak
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	/**
 	 * Tests inbound adapter configured with 'search-key' attribute.
 	 */
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testReceiveMessageKey() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
 		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 
 		// given
-		final Person lukasz = new Person( "1ukasz", "Lukasz", "Antoniak" );
+		final Person lukasz = new Person( "lukasz", "Lukasz", "Antoniak" );
 		storeClient.put( lukasz.getId(), lukasz );
 
 		// when
@@ -59,7 +59,6 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	 * Tests inbound adapter configured with 'search-key-expression' attribute.
 	 */
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testReceiveMessageExpr() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
@@ -79,7 +78,6 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testDeleteAfterPoll() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );

@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.integration.voldemort.config.xml;
+package org.springframework.integration.voldemort.test.outbound;
 
-import org.springframework.integration.config.xml.AbstractIntegrationNamespaceHandler;
+import org.springframework.integration.Message;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.voldemort.test.domain.Person;
 
 /**
- * The handler for the Voldemort namespace.
+ * Sample service activator used to verify order of output adapters execution.
  *
  * @author Lukasz Antoniak
  * @since 1.0
  */
-public class VoldemortNamespaceHandler extends AbstractIntegrationNamespaceHandler {
-	public void init() {
-		registerBeanDefinitionParser( "inbound-channel-adapter", new VoldemortInboundChannelAdapterParser() );
-		registerBeanDefinitionParser( "outbound-channel-adapter", new VoldemortOutboundChannelAdapterParser() );
+public class MessageUpdatingServiceActivator {
+	@ServiceActivator
+	public Message<Person> updateMessage(Message<Person> message) {
+		updatePerson( message.getPayload() );
+		return message;
+	}
+
+	protected void updatePerson(Person person) {
+		person.setFirstName( "Robert" );
 	}
 }

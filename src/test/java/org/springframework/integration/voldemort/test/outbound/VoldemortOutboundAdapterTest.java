@@ -20,7 +20,10 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessageChannel;
+import org.springframework.integration.MessageDeliveryException;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.integration.voldemort.support.PersistMode;
+import org.springframework.integration.voldemort.support.VoldemortHeaders;
 import org.springframework.integration.voldemort.test.BaseFunctionalTestCase;
 import org.springframework.integration.voldemort.test.domain.Person;
 import voldemort.client.StoreClient;
@@ -32,9 +35,9 @@ import voldemort.versioning.Versioned;
  * @author Lukasz Antoniak
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPutObject() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
@@ -55,7 +58,6 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testDeleteObject() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
 		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
@@ -72,6 +74,74 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 		// then
 		Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertNull( found );
+
+		context.close();
+	}
+
+	@Test
+	public void testOverridePersistMode() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
+
+		// given
+		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
+
+		// when
+		// Overriding output adapter's persist mode.
+		Message<Person> message = MessageBuilder.withPayload( lukasz )
+				.setHeader( VoldemortHeaders.PERSIST_MODE, PersistMode.PUT ).build();
+		voldemortOutboundDeleteChannel.send( message );
+
+		// then
+		Versioned found = storeClient.get( lukasz.getId() );
+		Assert.assertEquals( lukasz, found.getValue() );
+
+		context.close();
+	}
+
+	@Test
+	public void testStoppedAdapter() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		MessageChannel voldemortStoppedChannel = context.getBean( "voldemortStoppedChannel", MessageChannel.class );
+
+		// given
+		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
+
+		// when
+		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		try {
+			voldemortStoppedChannel.send( message );
+		}
+		catch ( MessageDeliveryException e ) {
+			return;
+		}
+		finally {
+			context.close();
+		}
+
+		Assert.fail();
+	}
+
+	@Test
+	public void testOrder() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		MessageUpdatingServiceActivator messageUpdater = context.getBean( "messageUpdater", MessageUpdatingServiceActivator.class );
+		MessageChannel voldemortOrderChannel = context.getBean( "voldemortOrderChannel", MessageChannel.class );
+
+		// given
+		final Person lukasz = new Person( "lukasz", "Lukasz", "Antoniak" );
+		final Person copy = new Person( "lukasz", "Lukasz", "Antoniak" );
+
+		// when
+		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		voldemortOrderChannel.send( message );
+
+		// then
+		messageUpdater.updatePerson( copy );
+		Versioned found = storeClient.get( lukasz.getId() );
+		Assert.assertEquals( copy, found.getValue() );
 
 		context.close();
 	}

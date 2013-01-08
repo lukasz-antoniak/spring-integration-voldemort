@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.integration.voldemort.config.xml;
-
-import org.springframework.integration.config.xml.AbstractIntegrationNamespaceHandler;
+package org.springframework.integration.voldemort.support;
 
 /**
- * The handler for the Voldemort namespace.
+ * Voldemort adapter specific message headers.
  *
  * @author Lukasz Antoniak
  * @since 1.0
  */
-public class VoldemortNamespaceHandler extends AbstractIntegrationNamespaceHandler {
-	public void init() {
-		registerBeanDefinitionParser( "inbound-channel-adapter", new VoldemortInboundChannelAdapterParser() );
-		registerBeanDefinitionParser( "outbound-channel-adapter", new VoldemortOutboundChannelAdapterParser() );
-	}
+public abstract class VoldemortHeaders {
+	private static final String PREFIX = "voldemort_";
+
+	/**
+	 * Overrides default output adapter's persist mode for a given message.
+	 */
+	public static final String PERSIST_MODE = PREFIX + "persistMode";
 }

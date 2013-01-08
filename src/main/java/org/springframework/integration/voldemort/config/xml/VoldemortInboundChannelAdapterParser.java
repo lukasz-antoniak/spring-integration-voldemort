@@ -45,7 +45,7 @@ public class VoldemortInboundChannelAdapterParser extends AbstractPollingInbound
 						VoldemortParserUtils.SEARCH_KEY, VoldemortParserUtils.SEARCH_KEY_EXPRESSION,
 						parserContext, element, true
 				);
-		builder.addConstructorArgValue(queryExpressionDef);
+		builder.addConstructorArgValue( queryExpressionDef );
 		IntegrationNamespaceUtils.setValueIfAttributeDefined( builder, element, VoldemortParserUtils.DELETE_AFTER_POLL );
 		return builder.getBeanDefinition();
 	}

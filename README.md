@@ -13,7 +13,7 @@ key.
 
 ### Example:
 ~~~~~xml
-<int-voldemort:inbound-channel-adapter id="voldemortInKey" channel="voldemortInboundChannel" search-key="1ukasz"
+<int-voldemort:inbound-channel-adapter id="voldemortInKey" channel="voldemortInboundChannel" search-key="lukasz"
                                        store-client="storeClient" message-converter="messageConverter">
     <int:poller fixed-rate="1000" />
 </int-voldemort:inbound-channel-adapter>
