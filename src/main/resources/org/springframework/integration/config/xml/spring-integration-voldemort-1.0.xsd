@@ -93,23 +93,6 @@
                     <xsd:union memberTypes="xsd:boolean xsd:string" />
                 </xsd:simpleType>
             </xsd:attribute>
-            <xsd:attribute name="send-timeout" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
-						Allows you to specify how long this inbound-channel-adapter
-						will wait for the message (containing the retrieved entities)
-						to be sent successfully to the message channel, before throwing
-						an exception.
-
-						Keep in mind that when sending to a DirectChannel, the
-						invocation will occur in the sender's thread so the failing
-						of the send operation may be caused by other components
-						further downstream. By default the Inbound Channel Adapter
-						will wait indefinitely. The value is specified in milliseconds.
-					]]>
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -130,9 +113,9 @@
             <xsd:annotation>
                 <xsd:appinfo>
                     <xsd:documentation>
-                        Reference to a Message Channel that will be used by this adapter to
-                        "receive from" or "send to" messages depending on the adapter type
-                        (e.g. inbound/outbound).
+                        Reference to a MessageChannel that will be utilized to
+                        "receive from" or "send to" messages depending on the
+                        adapter type (e.g. inbound or outbound).
                     </xsd:documentation>
                     <tool:annotation kind="ref">
                         <tool:expected-type type="org.springframework.integration.MessageChannel"/>
@@ -144,7 +127,7 @@
             <xsd:annotation>
                 <xsd:appinfo>
                     <xsd:documentation>
-                        Voldemort store client.
+                        Native Voldemort store client.
                     </xsd:documentation>
                     <tool:annotation kind="ref">
                         <tool:expected-type type="voldemort.client.StoreClient"/>
