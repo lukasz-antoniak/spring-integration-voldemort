@@ -16,7 +16,6 @@
 package org.springframework.integration.voldemort.convert;
 
 import org.springframework.integration.Message;
-import org.springframework.integration.voldemort.support.KeyValue;
 import org.springframework.integration.support.MessageBuilder;
 import voldemort.versioning.Versioned;
 

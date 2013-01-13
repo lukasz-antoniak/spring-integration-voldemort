@@ -32,7 +32,7 @@
                     <xsd:documentation>
                         Defines default persist mode for outbound-channel-adapter.
                         By default values are added or updated in the underlying
-                        Voldemort database. Hereby behavior can be overridden with
+                        Voldemort database. Hereby behavior can be overridden using
                         VoldemortHeaders.PERSIST_MODE message header.
                     </xsd:documentation>
                 </xsd:annotation>
@@ -44,7 +44,7 @@
                 <xsd:annotation>
                     <xsd:documentation>
                         Specifies the order for invocation when this endpoint is connected as a
-                        subscriber to a SubscribableChannel.
+                        subscriber to SubscribableChannel.
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
@@ -75,7 +75,7 @@
             <xsd:attribute name="search-key-expression" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>
-                        Spring Expression Language expression that returns
+                        Spring Expression Language statement that returns
                         desired entry key.
                         This attribute is mutually exclusive with 'search-key' attribute.
                     </xsd:documentation>

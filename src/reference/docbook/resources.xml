@@ -27,8 +27,8 @@
     <section id="voldemort-integration-tests">
         <title>Voldemort Adapter Integration Tests</title>
         <para>
-            Integration tests of Voldemort adapter have been implemented in <literal>src/test/java</literal> and
-            <literal>src/test/resources</literal> packages (hosted with the entire source code on GitHub).
+            Integration tests of Voldemort adapter are available together with the entire source code on GitHub
+            (review content of <literal>src/test/java</literal> and <literal>src/test/resources</literal> packages).
         </para>
     </section>
 

@@ -18,7 +18,7 @@ package org.springframework.integration.voldemort.test.domain;
 import org.springframework.integration.Message;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.voldemort.convert.VoldemortConverter;
-import org.springframework.integration.voldemort.support.KeyValue;
+import org.springframework.integration.voldemort.convert.KeyValue;
 import voldemort.versioning.Versioned;
 
 /**

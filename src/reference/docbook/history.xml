@@ -3,18 +3,23 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>Change History</title>
-    <table>
-        <thead>
-            <td>Release</td>
-            <td>Date</td>
-            <td>Changes</td>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1.0.0</td>
-                <td>03 Jan 2013</td>
-                <td>Initial release.</td>
-            </tr>
-        </tbody>
+    <table frame="all">
+        <title>Change History</title>
+        <tgroup cols="3">
+            <thead>
+                <row>
+                    <entry>Release</entry>
+                    <entry>Date</entry>
+                    <entry>Changes</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>1.0.0</entry>
+                    <entry>13 Jan 2013</entry>
+                    <entry>Initial release providing basic capabilities for inbound and outbound adapters.</entry>
+                </row>
+            </tbody>
+        </tgroup>
     </table>
 </appendix>

@@ -18,7 +18,7 @@ package org.springframework.integration.voldemort.outbound;
 import org.springframework.integration.Message;
 import org.springframework.integration.handler.AbstractMessageHandler;
 import org.springframework.integration.voldemort.convert.VoldemortConverter;
-import org.springframework.integration.voldemort.support.KeyValue;
+import org.springframework.integration.voldemort.convert.KeyValue;
 import org.springframework.integration.voldemort.support.PersistMode;
 import org.springframework.integration.voldemort.support.VoldemortHeaders;
 import voldemort.client.StoreClient;
