@@ -38,10 +38,8 @@ Voldemort store client and message converter.
 
 ### Example:
 ~~~~~xml
-<beans xmlns:int="http://www.springframework.org/schema/integration"
-       xmlns:int-voldemort="http://www.springframework.org/schema/integration/voldemort"
-       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-           http://www.springframework.org/schema/integration/voldemort http://www.springframework.org/schema/integration/voldemort/spring-integration-voldemort.xsd">
+<beans xmlns:int-voldemort="http://www.springframework.org/schema/integration/voldemort"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration/voldemort http://www.springframework.org/schema/integration/voldemort/spring-integration-voldemort.xsd">
     ...
     <int-voldemort:outbound-channel-adapter id="voldemortOut" channel="voldemortOutboundChannel"
                                             store-client="storeClient" message-converter="messageConverter"
