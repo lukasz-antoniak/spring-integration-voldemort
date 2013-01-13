@@ -37,7 +37,7 @@ public class VoldemortOutboundChannelAdapterParser extends AbstractOutboundChann
 	 */
 	@Override
 	protected AbstractBeanDefinition parseConsumer(Element element, ParserContext parserContext) {
-		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition( VoldemortStoringMessageHandler.class );
+		final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition( VoldemortStoringMessageHandler.class );
 		VoldemortParserUtils.processCommonAttributes( element, builder );
 		IntegrationNamespaceUtils.setValueIfAttributeDefined( builder, element, VoldemortParserUtils.PERSIST_MODE );
 		return builder.getBeanDefinition();

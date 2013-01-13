@@ -35,11 +35,11 @@ abstract class VoldemortParserUtils {
 	static final String KEY_EXPRESSION_PROPERTY = "keyExpression";
 
 	/**
-	 * Handles 'store-client' and 'message-converter' attributes.
+	 * Handles "store-client" and "message-converter" attributes.
 	 */
 	static void processCommonAttributes(Element element, BeanDefinitionBuilder builder) {
-		String storeClient = element.getAttribute( VoldemortParserUtils.STORE_CLIENT );
-		String messageConverter = element.getAttribute( VoldemortParserUtils.MESSAGE_CONVERTER );
+		final String storeClient = element.getAttribute( VoldemortParserUtils.STORE_CLIENT );
+		final String messageConverter = element.getAttribute( VoldemortParserUtils.MESSAGE_CONVERTER );
 		builder.addConstructorArgReference( storeClient );
 		builder.addConstructorArgReference( messageConverter );
 	}

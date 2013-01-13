@@ -69,7 +69,7 @@ public class VoldemortStoringMessageHandler extends AbstractMessageHandler {
 	 * @return Persist mode.
 	 */
 	private PersistMode determinePersistMode(Message<?> message) {
-		Object confValue = message.getHeaders().get( VoldemortHeaders.PERSIST_MODE );
+		final Object confValue = message.getHeaders().get( VoldemortHeaders.PERSIST_MODE );
 		if ( confValue instanceof PersistMode ) {
 			return (PersistMode) confValue;
 		}

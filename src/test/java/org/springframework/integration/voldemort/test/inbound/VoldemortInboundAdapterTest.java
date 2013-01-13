@@ -26,7 +26,7 @@ import voldemort.client.StoreClient;
 import voldemort.versioning.Versioned;
 
 /**
- * Voldemort inbound adapter tests.
+ * Voldemort basic inbound adapter tests.
  *
  * @author Lukasz Antoniak
  * @since 1.0
@@ -34,20 +34,20 @@ import voldemort.versioning.Versioned;
 @SuppressWarnings("unchecked")
 public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	/**
-	 * Tests inbound adapter configured with 'search-key' attribute.
+	 * Tests inbound adapter configured with "search-key" attribute.
 	 */
 	@Test
 	public void testReceiveMessageKey() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 
 		// given
 		final Person lukasz = new Person( "lukasz", "Lukasz", "Antoniak" );
 		storeClient.put( lukasz.getId(), lukasz );
 
 		// when
-		Message<Person> received = (Message<Person>) inboundChannel.receive();
+		final Message<Person> received = (Message<Person>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( lukasz, received.getPayload() );
@@ -56,20 +56,20 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 	}
 
 	/**
-	 * Tests inbound adapter configured with 'search-key-expression' attribute.
+	 * Tests inbound adapter configured with "search-key-expression" attribute.
 	 */
 	@Test
 	public void testReceiveMessageExpr() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 
 		// given
 		final Person kinga = new Person( "kinga", "Kinga", "Mroz" );
 		storeClient.put( kinga.getId(), kinga );
 
 		// when
-		Message<Person> received = (Message<Person>) inboundChannel.receive();
+		final Message<Person> received = (Message<Person>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( kinga, received.getPayload() );
@@ -79,16 +79,16 @@ public class VoldemortInboundAdapterTest extends BaseFunctionalTestCase {
 
 	@Test
 	public void testDeleteAfterPoll() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortInboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 
 		// given
 		final Person robert = new Person( "robert", "Robert", "Antoniak" );
 		storeClient.put( robert.getId(), robert );
 
 		// when
-		Message<Person> received = (Message<Person>) inboundChannel.receive();
+		final Message<Person> received = (Message<Person>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( robert, received.getPayload() );

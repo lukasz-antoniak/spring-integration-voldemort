@@ -38,9 +38,9 @@ public class VoldemortInboundChannelAdapterParser extends AbstractPollingInbound
 	 */
 	@Override
 	protected BeanMetadataElement parseSource(Element element, ParserContext parserContext) {
-		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition( VoldemortMessageSource.class );
+		final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition( VoldemortMessageSource.class );
 		VoldemortParserUtils.processCommonAttributes( element, builder );
-		RootBeanDefinition queryExpressionDef =
+		final RootBeanDefinition queryExpressionDef =
 				IntegrationNamespaceUtils.createExpressionDefinitionFromValueOrExpression(
 						VoldemortParserUtils.SEARCH_KEY, VoldemortParserUtils.SEARCH_KEY_EXPRESSION,
 						parserContext, element, true

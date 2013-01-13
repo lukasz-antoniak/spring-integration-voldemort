@@ -38,7 +38,7 @@ public abstract class BaseFunctionalTestCase {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		VoldemortConfig config = configureServer();
+		final VoldemortConfig config = configureServer();
 		server = new VoldemortServer( config );
 		server.start();
 	}
@@ -62,13 +62,13 @@ public abstract class BaseFunctionalTestCase {
 		final File voldemortHome = new File( System.getProperty( "java.io.tmpdir" ), "voldemort" );
 		FileUtils.deleteDirectory( voldemortHome );
 
-		Properties properties = new Properties();
+		final Properties properties = new Properties();
 		properties.put( "node.id", "0" );
 		properties.put( "voldemort.home", voldemortHome.getAbsolutePath() );
 		addConfigOptions( properties );
-		VoldemortConfig config = new VoldemortConfig( properties );
+		final VoldemortConfig config = new VoldemortConfig( properties );
 
-		File metadata = new File( config.getMetadataDirectory() );
+		final File metadata = new File( config.getMetadataDirectory() );
 		FileUtils.forceMkdir( metadata );
 
 		FileUtils.copyFileToDirectory( getClusterConfiguration(), metadata );
@@ -92,7 +92,7 @@ public abstract class BaseFunctionalTestCase {
 	}
 
 	/**
-	 * Subclasses may like to setup specific server configuration parameters.
+	 * Subclasses may want to setup specific server configuration parameters.
 	 *
 	 * @param properties Voldemort server configuration properties.
 	 */

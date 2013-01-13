@@ -25,7 +25,7 @@
     <para>
         Each of the components listed above requires to pass an implementation of
         <interfacename>voldemort.client.StoreClient</interfacename> as one of the constructor parameters. This way
-        Voldemort Adapter does not need to introduce all configuration parameters required to build native store client
+        Voldemort Adapter does not need to introduce all configuration options required to build native store client
         and enables developers to choose the concrete implementation of hereby interface.
     </para>
 
@@ -127,7 +127,7 @@
     <section id="voldemort-outbound-channel-adapter">
         <title>Outbound Channel Adapter</title>
         <para>
-            The Voldemort Outbound channel adapter allows persist data transferred through message channel in
+            The Voldemort Outbound channel adapter allows to persist data transferred through message channel in
             the underlying key-value store.
         </para>
         <programlisting language="xml">&lt;int-voldemort:outbound-channel-adapter id="voldemortOutbound"

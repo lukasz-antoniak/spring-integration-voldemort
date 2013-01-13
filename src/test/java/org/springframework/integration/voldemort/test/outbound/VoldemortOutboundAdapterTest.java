@@ -30,7 +30,7 @@ import voldemort.client.StoreClient;
 import voldemort.versioning.Versioned;
 
 /**
- * Voldemort outbound adapter tests.
+ * Voldemort basic outbound adapter tests.
  *
  * @author Lukasz Antoniak
  * @since 1.0
@@ -39,19 +39,19 @@ import voldemort.versioning.Versioned;
 public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 	@Test
 	public void testPutObject() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		MessageChannel voldemortOutboundPutChannel = context.getBean( "voldemortOutboundPutChannel", MessageChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final MessageChannel voldemortOutboundPutChannel = context.getBean( "voldemortOutboundPutChannel", MessageChannel.class );
 
 		// given
 		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
 
 		// when
-		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		final Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
 		voldemortOutboundPutChannel.send( message );
 
 		// then
-		Versioned found = storeClient.get( lukasz.getId() );
+		final Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertEquals( lukasz, found.getValue() );
 
 		context.close();
@@ -59,20 +59,20 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 
 	@Test
 	public void testDeleteObject() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
 
 		// given
 		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
 		storeClient.put( lukasz.getId(), lukasz );
 
 		// when
-		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		final Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
 		voldemortOutboundDeleteChannel.send( message );
 
 		// then
-		Versioned found = storeClient.get( lukasz.getId() );
+		final Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertNull( found );
 
 		context.close();
@@ -80,21 +80,21 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 
 	@Test
 	public void testOverridePersistMode() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final MessageChannel voldemortOutboundDeleteChannel = context.getBean( "voldemortOutboundDeleteChannel", MessageChannel.class );
 
 		// given
 		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
 
 		// when
 		// Overriding output adapter's persist mode.
-		Message<Person> message = MessageBuilder.withPayload( lukasz )
+		final Message<Person> message = MessageBuilder.withPayload( lukasz )
 				.setHeader( VoldemortHeaders.PERSIST_MODE, PersistMode.PUT ).build();
 		voldemortOutboundDeleteChannel.send( message );
 
 		// then
-		Versioned found = storeClient.get( lukasz.getId() );
+		final Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertEquals( lukasz, found.getValue() );
 
 		context.close();
@@ -102,14 +102,14 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 
 	@Test
 	public void testStoppedAdapter() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
-		MessageChannel voldemortStoppedChannel = context.getBean( "voldemortStoppedChannel", MessageChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		final MessageChannel voldemortStoppedChannel = context.getBean( "voldemortStoppedChannel", MessageChannel.class );
 
 		// given
 		final Person lukasz = new Person( "1", "Lukasz", "Antoniak" );
 
 		// when
-		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		final Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
 		try {
 			voldemortStoppedChannel.send( message );
 		}
@@ -125,22 +125,22 @@ public class VoldemortOutboundAdapterTest extends BaseFunctionalTestCase {
 
 	@Test
 	public void testOrder() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
-		MessageUpdatingServiceActivator messageUpdater = context.getBean( "messageUpdater", MessageUpdatingServiceActivator.class );
-		MessageChannel voldemortOrderChannel = context.getBean( "voldemortOrderChannel", MessageChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "VoldemortOutboundAdapterTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "storeClient", StoreClient.class );
+		final MessageUpdatingServiceActivator messageUpdater = context.getBean( "messageUpdater", MessageUpdatingServiceActivator.class );
+		final MessageChannel voldemortOrderChannel = context.getBean( "voldemortOrderChannel", MessageChannel.class );
 
 		// given
 		final Person lukasz = new Person( "lukasz", "Lukasz", "Antoniak" );
 		final Person copy = new Person( "lukasz", "Lukasz", "Antoniak" );
 
 		// when
-		Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
+		final Message<Person> message = MessageBuilder.withPayload( lukasz ).build();
 		voldemortOrderChannel.send( message );
 
 		// then
 		messageUpdater.updatePerson( copy );
-		Versioned found = storeClient.get( lukasz.getId() );
+		final Versioned found = storeClient.get( lukasz.getId() );
 		Assert.assertEquals( copy, found.getValue() );
 
 		context.close();

@@ -34,9 +34,9 @@ import voldemort.client.StoreClient;
 public class ObjectKeyTest extends BaseFunctionalTestCase {
 	@Test
 	public void testReceiveMessageByObjectKey() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "ObjectKeyTest-context.xml", getClass() );
-		StoreClient storeClient = context.getBean( "objectStoreClient", StoreClient.class );
-		PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "ObjectKeyTest-context.xml", getClass() );
+		final StoreClient storeClient = context.getBean( "objectStoreClient", StoreClient.class );
+		final PollableChannel inboundChannel = context.getBean( "voldemortInboundChannel", PollableChannel.class );
 
 		// given
 		final Car.CarId carId = new Car.CarId( 1 );
@@ -44,7 +44,7 @@ public class ObjectKeyTest extends BaseFunctionalTestCase {
 		storeClient.put( carId, car );
 
 		// when
-		Message<Car> received = (Message<Car>) inboundChannel.receive();
+		final Message<Car> received = (Message<Car>) inboundChannel.receive();
 
 		// then
 		Assert.assertEquals( car, received.getPayload() );

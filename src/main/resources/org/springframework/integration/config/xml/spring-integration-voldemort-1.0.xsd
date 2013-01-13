@@ -66,7 +66,7 @@
             <xsd:attribute name="search-key" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>
-                        Key that is being searched.
+                        String key that is being searched.
                         This attribute is mutually exclusive
                         with 'search-key-expression' attribute.
                     </xsd:documentation>

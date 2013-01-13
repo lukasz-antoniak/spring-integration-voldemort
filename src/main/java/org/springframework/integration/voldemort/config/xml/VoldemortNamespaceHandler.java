@@ -18,7 +18,7 @@ package org.springframework.integration.voldemort.config.xml;
 import org.springframework.integration.config.xml.AbstractIntegrationNamespaceHandler;
 
 /**
- * The handler for the Voldemort namespace.
+ * The handler for Voldemort extension namespace.
  *
  * @author Lukasz Antoniak
  * @since 1.0

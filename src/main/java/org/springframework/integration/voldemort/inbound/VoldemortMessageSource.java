@@ -26,7 +26,7 @@ import voldemort.client.StoreClient;
 import voldemort.versioning.Versioned;
 
 /**
- * Voldemort pooling inbound adapter implementation. Regularly tries to retrieve object with a given key.
+ * Voldemort polling inbound adapter implementation. Regularly tries to retrieve object with a given key.
  *
  * @author Lukasz Antoniak
  * @since 1.0
