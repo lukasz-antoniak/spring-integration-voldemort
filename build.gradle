@@ -75,7 +75,7 @@ ext.xLintArg = '-Xlint:all'
 test {
 	// suppress all console output during testing unless running `gradle -i`
 	logging.captureStandardOutput(LogLevel.INFO)
-    // JVM settings from http://www.project-voldemort.com/voldemort/configuration.html
+	// JVM settings from http://www.project-voldemort.com/voldemort/configuration.html
 	jvmArgs "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=*"
 }
 
