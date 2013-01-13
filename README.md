@@ -13,10 +13,18 @@ key.
 
 ### Example:
 ~~~~~xml
-<int-voldemort:inbound-channel-adapter id="voldemortInKey" channel="voldemortInboundChannel" search-key="lukasz"
-                                       store-client="storeClient" message-converter="messageConverter">
-    <int:poller fixed-rate="1000" />
-</int-voldemort:inbound-channel-adapter>
+<beans xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-voldemort="http://www.springframework.org/schema/integration/voldemort"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+           http://www.springframework.org/schema/integration/voldemort http://www.springframework.org/schema/integration/voldemort/spring-integration-voldemort.xsd">
+    ...
+    <int-voldemort:inbound-channel-adapter id="voldemortInKey" channel="voldemortInboundChannel" search-key="lukasz"
+                                           store-client="storeClient" message-converter="messageConverter"
+                                           delete-after-poll="true" auto-startup="true">
+        <int:poller fixed-rate="1000" />
+    </int-voldemort:inbound-channel-adapter>
+    ...
+</beans>
 ~~~~~
 
 For more implementation details please review documentation and integration
@@ -30,8 +38,16 @@ Voldemort store client and message converter.
 
 ### Example:
 ~~~~~xml
-<int-voldemort:outbound-channel-adapter id="voldemortOut" channel="voldemortOutboundChannel"
-                                        store-client="storeClient" message-converter="messageConverter" />
+<beans xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-voldemort="http://www.springframework.org/schema/integration/voldemort"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+           http://www.springframework.org/schema/integration/voldemort http://www.springframework.org/schema/integration/voldemort/spring-integration-voldemort.xsd">
+    ...
+    <int-voldemort:outbound-channel-adapter id="voldemortOut" channel="voldemortOutboundChannel"
+                                            store-client="storeClient" message-converter="messageConverter"
+                                            persist-mode="PUT" order="1" auto-startup="true" />
+    ...
+</beans>
 ~~~~~
 
 For more implementation details please review documentation and integration
