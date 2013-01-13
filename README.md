@@ -8,7 +8,7 @@ Inbound channel adapter:
 -----------------------------------------------------------------------------
 Inbound channel adapter is used to retrieve data out of Voldemort database
 and transfer objects into Spring Integration's channel. Component expects
-user to provide Voldemort store client, message converter and desired object
+user to provide Voldemort store client, message converter and desired object's
 key.
 
 ### Example:
